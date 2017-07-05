@@ -49,7 +49,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Start Bootstrap</a>
+                <a class="navbar-brand page-scroll" href="#page-top">Admin Amadou Niang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -60,7 +60,7 @@
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#about">About</a>
+                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#services">Services</a>
@@ -105,8 +105,16 @@
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
+                <?php
+
+                    $sql = $pdoCV->prepare("SELECT * FROM% t_compétences WHERE utilisateur_id = '1'");//prépare la requête
+                    $sql->execute(); // exécute-la
+                    $nbr_compétences = $sql->rowCount() // compte les lignes
+
+                 ?>
                 <div class="col-lg-12">
-                    <h1>About Section</h1>
+                    <h1>COMPETENCE</h1>
+                    <p>il y a <?php echo $nbr_compétences; ?> compétence pour </p>
                 </div>
             </div>
         </div>
