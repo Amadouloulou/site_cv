@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title></title>
+    <title>Admin</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -49,7 +49,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand page-scroll" href="#page-top">Admin Amadou Niang</a>
+                <a class="navbar-brand page-scroll" href="index.php">Admin Amadou Niang</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -63,7 +63,7 @@
                         <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#services">Services</a>
+                        <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>

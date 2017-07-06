@@ -1,20 +1,20 @@
 <?php require '../connexion/connexion.php' ?>
 <?php
-if(isset($_POST['competence'])){//si on récupere une nouvelle compétence
-    if($_POST['competence']!=''){// si competence est pas vide
-            $competence = addslashes($_POST['competence']);
-            $pdoCV->exec("INSERT INTO t_competences VALUES (NULL, '$competence', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/competences.php");
+if(isset($_POST['loisir'])){//si on récupere un nouveau loisir
+    if($_POST['loisir']!=''){// si loisir est pas vide
+            $loisir = addslashes($_POST['loisir']);
+            $pdoCV->exec("INSERT INTO t_loisirs VALUES (NULL, '$loisir', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            header("location: ../admin/loisirs.php");
             exit();
     }//ferme le if
 }//ferme le if isset
 
-// suppression d'une compétence
-if(isset($_GET['id_competence'])){
-    $efface = $_GET['id_competence'];
-    $sql = "DELETE FROM t_competences WHERE id_competence = '$efface'";
+// suppression d'un loisir
+if(isset($_GET['id_loisir'])){
+    $efface = $_GET['id_loisir'];
+    $sql = "DELETE FROM t_loisirs WHERE id_loisir = '$efface'";
     $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/competences.php");
+    header("location: ../admin/loisirs.php");
 
 }
 
@@ -31,7 +31,7 @@ if(isset($_GET['id_competence'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Compétences</title>
+    <title>Loisirs</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -81,7 +81,7 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
+                        <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -99,37 +99,37 @@ if(isset($_GET['id_competence'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>COMPETENCES</h1>
+                <h1>Loisirs</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '2' ");
-                        $competence->execute();// execute la
-                        $nbr_competences = $competence->rowCount();
+                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '2' ");
+                        $loisir->execute();// execute la
+                        $nbr_loisirs = $loisir->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
                                 <tr>
-                                    <th>Compétences</th>
+                                    <th>Loisir</th>
                                     <th>Modifier</th>
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
-                                    <?php while($ligne_competence = $competence->fetch()){ ?>
-                                    <td><?php echo $ligne_competence['competence']; ?></td>
+                                    <?php while($ligne_loisir = $loisir->fetch()){ ?>
+                                    <td><?php echo $ligne_loisir['loisir']; ?></td>
                                     <td><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="competences.php?id_competence=<?php echo $ligne_competence['id_competence'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <td><a href="loisirs.php?id_loisir=<?php echo $ligne_loisir['id_loisir'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
 
-                        <form class="" action="competences.php" method="post">
-                            <label for="competence">Compétence</label>
-                            <input type="text" name="competence" placeholder="Inserez une competence" required>
+                        <form class="" action="loisirs.php" method="post">
+                            <label for="loisir">Loisir</label>
+                            <input type="text" name="loisir" placeholder="Inserez une loisir" required>
                             <input type="submit" name="" value="Ajouter">
                         </form>
                 </div>
