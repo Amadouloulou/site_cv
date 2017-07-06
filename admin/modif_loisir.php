@@ -1,23 +1,21 @@
 <?php require '../connexion/connexion.php' ?>
+
 <?php
-if(isset($_POST['competence'])){//si on récupere une nouvelle compétence
-    if($_POST['competence']!=''){// si competence est pas vide
-            $competence = addslashes($_POST['competence']);
-            $pdoCV->exec("INSERT INTO t_competences VALUES (NULL, '$competence', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/competences.php");
-            exit();
-    }//ferme le if
-}//ferme le if isset
+// gestion des contenus, mise à jour d'une compétence
+if(isset($_POST['loisir'])){// par le nom du premier input
 
-// suppression d'une compétence
-if(isset($_GET['id_competence'])){
-    $efface = $_GET['id_competence'];
-    $sql = "DELETE FROM t_competences WHERE id_competence = '$efface'";
-    $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/competences.php");
 
+    $loisir = addslashes($_POST['loisir']);
+    $id_loisir = $_POST['id_loisir'];
+    $pdoCV->query("UPDATE t_loisirs SET loisir='$loisir' WHERE id_loisir='$id_loisir'");
+
+    header('location: ../admin/loisirs.php');//le header pour revenir à la liste des compétences de l'utilisation
+    exit();
 }
-
+//je récupère la compétence
+$id_loisir = $_GET['id_loisir']; // par l'id et $_GET
+$sql = $pdoCV->query("SELECT * FROM t_loisirs WHERE id_loisir = '$id_loisir'"); // la requête égale à l'id
+$ligne_loisir = $sql->fetch();//
  ?>
 
 <!DOCTYPE html>
@@ -81,7 +79,7 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
+                        <a class="page-scroll" href="loisirs.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -99,38 +97,21 @@ if(isset($_GET['id_competence'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>COMPETENCES</h1>
-                <div class="col-lg"></h1>
+                <h1>Mise à jour d'un loisir</h1>
+                <div class="col-lg"></div>
                     <?php
-                        $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '2' ");
-                        $competence->execute();// execute la
-                        $nbr_competences = $competence->rowCount();
+                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '2' ");
+                        $loisir->execute();// execute la
+                        $nbr_loisirs = $loisir->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped">
-                            <tbody>
-                                <tr>
-                                    <th>Compétences</th>
-                                    <th>Modifier</th>
-                                    <th>Supprimer</th>
-                                </tr>
-                                <tr>
-                                    <?php while($ligne_competence = $competence->fetch()){ ?>
-                                    <td><?php echo $ligne_competence['competence']; ?></td>
-                                    <td><a href="modif_competence.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="competences.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-                                </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
-
-                        <form class="" action="competences.php" method="post">
-                            <label for="competence">Compétence</label>
-                            <input type="text" name="competence" placeholder="Inserez une competence" required>
-                            <input type="submit" name="" value="Ajouter">
+                        <form class="" action="modif_loisir.php" method="post">
+                            <label for="loisir">Formulaire de mise à jour du loisir</label>
+                            <input type="text" name="loisir" class="form-control" value="<?php echo $ligne_loisir['loisir']; ?>">
+                            <input hidden name="id_loisir" value="<?php echo $ligne_loisir['id_loisir']; ?>">
+                            <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
                 </div>
             </div>
@@ -164,7 +145,6 @@ if(isset($_GET['id_competence'])){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="amadou_js.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>

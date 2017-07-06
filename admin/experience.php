@@ -1,20 +1,20 @@
 <?php require '../connexion/connexion.php' ?>
 <?php
-if(isset($_POST['competence'])){//si on récupere une nouvelle compétence
-    if($_POST['competence']!=''){// si competence est pas vide
-            $competence = addslashes($_POST['competence']);
-            $pdoCV->exec("INSERT INTO t_competences VALUES (NULL, '$competence', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/competences.php");
+if(isset($_POST['experience'])){//si on récupere une nouvelle compétence
+    if($_POST['experience']!=''){// si experience est pas vide
+            $experience = addslashes($_POST['experience']);
+            $pdoCV->exec("INSERT INTO t_experiences VALUES (NULL, '$experience', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            header("location: ../admin/experiences.php");
             exit();
     }//ferme le if
 }//ferme le if isset
 
 // suppression d'une compétence
-if(isset($_GET['id_competence'])){
-    $efface = $_GET['id_competence'];
-    $sql = "DELETE FROM t_competences WHERE id_competence = '$efface'";
+if(isset($_GET['id_experience'])){
+    $efface = $_GET['id_experience'];
+    $sql = "DELETE FROM t_experiences WHERE id_experience = '$efface'";
     $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/competences.php");
+    header("location: ../admin/experiences.php");
 
 }
 
@@ -31,7 +31,7 @@ if(isset($_GET['id_competence'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Compétences</title>
+    <title>Experience</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -81,13 +81,13 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
+                        <a class="page-scroll" href="experiences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="page-scroll" href="experiences.php">Expérience</a>
                     </li>
                 </ul>
             </div>
@@ -99,15 +99,15 @@ if(isset($_GET['id_competence'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>COMPETENCES</h1>
+                <h1>experiences</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '2' ");
-                        $competence->execute();// execute la
-                        $nbr_competences = $competence->rowCount();
+                        $experience = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '2' ");
+                        $experience->execute();// execute la
+                        $nbr_experiences = $experience->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_experiences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
@@ -117,19 +117,23 @@ if(isset($_GET['id_competence'])){
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
-                                    <?php while($ligne_competence = $competence->fetch()){ ?>
-                                    <td><?php echo $ligne_competence['competence']; ?></td>
-                                    <td><a href="modif_competence.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="competences.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <?php while($ligne_experience = $experience->fetch()){ ?>
+                                    <td><?php echo $ligne_experience['experience']; ?></td>
+                                    <td><a href="modif_experience.php?id_experience=<?php echo $ligne_experience['id_experience']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td><a href="experiences.php?id_experience=<?php echo $ligne_experience['id_experience']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
 
-                        <form class="" action="competences.php" method="post">
-                            <label for="competence">Compétence</label>
-                            <input type="text" name="competence" placeholder="Inserez une competence" required>
+                        <form class="" action="experiences.php" method="post">
+                            <label for="titre">Titre</label>
+                            <input type="text" name="titre_e">
+                            <input type="text" name="sous_titre_e" >
+                            <input type="text" name="date_e" >
+                            <input type="text" name="description_e" >
+
                             <input type="submit" name="" value="Ajouter">
                         </form>
                 </div>
@@ -164,7 +168,6 @@ if(isset($_GET['id_competence'])){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="amadou_js.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>

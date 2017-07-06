@@ -1,23 +1,21 @@
 <?php require '../connexion/connexion.php' ?>
+
 <?php
-if(isset($_POST['competence'])){//si on récupere une nouvelle compétence
-    if($_POST['competence']!=''){// si competence est pas vide
-            $competence = addslashes($_POST['competence']);
-            $pdoCV->exec("INSERT INTO t_competences VALUES (NULL, '$competence', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/competences.php");
-            exit();
-    }//ferme le if
-}//ferme le if isset
+// gestion des contenus, mise à jour d'une compétence
+if(isset($_POST['competence'])){// par le nom du premier input
 
-// suppression d'une compétence
-if(isset($_GET['id_competence'])){
-    $efface = $_GET['id_competence'];
-    $sql = "DELETE FROM t_competences WHERE id_competence = '$efface'";
-    $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/competences.php");
 
+    $competence = addslashes($_POST['competence']);
+    $id_competence = $_POST['id_competence'];
+    $pdoCV->query("UPDATE t_competences SET competence='$competence' WHERE id_competence='$id_competence'");
+
+    header('location: ../admin/competences.php');//le header pour revenir à la liste des compétences de l'utilisation
+    exit();
 }
-
+//je récupère la compétence
+$id_competence = $_GET['id_competence']; // par l'id et $_GET
+$sql = $pdoCV->query("SELECT * FROM t_competences WHERE id_competence = '$id_competence'"); // la requête égale à l'id
+$ligne_competence = $sql->fetch();//
  ?>
 
 <!DOCTYPE html>
@@ -81,7 +79,7 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
+                        <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -99,8 +97,8 @@ if(isset($_GET['id_competence'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>COMPETENCES</h1>
-                <div class="col-lg"></h1>
+                <h1>Mise à jour d'une compétence</h1>
+                <div class="col-lg"></div>
                     <?php
                         $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '2' ");
                         $competence->execute();// execute la
@@ -109,28 +107,11 @@ if(isset($_GET['id_competence'])){
                     ?>
                     <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped">
-                            <tbody>
-                                <tr>
-                                    <th>Compétences</th>
-                                    <th>Modifier</th>
-                                    <th>Supprimer</th>
-                                </tr>
-                                <tr>
-                                    <?php while($ligne_competence = $competence->fetch()){ ?>
-                                    <td><?php echo $ligne_competence['competence']; ?></td>
-                                    <td><a href="modif_competence.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="competences.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-                                </tr>
-                            <?php } ?>
-                            </tbody>
-                        </table>
-
-                        <form class="" action="competences.php" method="post">
-                            <label for="competence">Compétence</label>
-                            <input type="text" name="competence" placeholder="Inserez une competence" required>
-                            <input type="submit" name="" value="Ajouter">
+                        <form class="" action="modif_competence.php" method="post">
+                            <label for="competence">Formulaire de mise à jour de la compétence</label>
+                            <input type="text" name="competence" class="form-control" value="<?php echo $ligne_competence['competence']; ?>">
+                            <input hidden name="id_competence" value="<?php echo $ligne_competence['id_competence']; ?>">
+                            <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
                 </div>
             </div>
@@ -164,7 +145,6 @@ if(isset($_GET['id_competence'])){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="amadou_js.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>
