@@ -31,7 +31,7 @@ if(isset($_GET['id_experience'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Experience</title>
+    <title>Expérience</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -128,36 +128,20 @@ if(isset($_GET['id_experience'])){
                         </table>
 
                         <form class="" action="experiences.php" method="post">
-                            <label for="titre">Titre</label>
-                            <input type="text" name="titre_e">
-                            <input type="text" name="sous_titre_e" >
-                            <input type="text" name="date_e" >
-                            <input type="text" name="description_e" >
+                            <label for="titre_e">Titre</label><br />
+                            <input type="text" name="titre_e"><br /><br />
+
+                            <label for="sous_titre_e">Sous_titre</label><br />
+                            <input type="text" name="sous_titre_e"><br /><br />
+
+                            <label for="date_e">Date</label><br />
+                            <input type="text" name="date_e" ><br /><br />
+
+                            <label for="description_e">Description</label><br />
+                            <input type="text" name="description_e" ><br /><br />
 
                             <input type="submit" name="" value="Ajouter">
                         </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Services Section</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Contact Section</h1>
                 </div>
             </div>
         </div>

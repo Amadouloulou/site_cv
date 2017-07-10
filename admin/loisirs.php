@@ -87,7 +87,7 @@ if(isset($_GET['id_loisir'])){
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="page-scroll" href="experiences.php">Expériences</a>
                     </li>
                 </ul>
             </div>
@@ -132,28 +132,6 @@ if(isset($_GET['id_loisir'])){
                             <input type="text" name="loisir" placeholder="Inserez une loisir" required>
                             <input type="submit" name="" value="Ajouter">
                         </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Services Section</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Contact Section</h1>
                 </div>
             </div>
         </div>

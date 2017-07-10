@@ -85,7 +85,7 @@ $ligne_loisir = $sql->fetch();//
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="page-scroll" href="experiences.php">Expériences</a>
                     </li>
                 </ul>
             </div>
@@ -97,7 +97,7 @@ $ligne_loisir = $sql->fetch();//
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Mise à jour d'un loisir</h1>
+                <h1>Mise à jour d'une compétence</h1>
                 <div class="col-lg"></div>
                     <?php
                         $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '2' ");
@@ -105,10 +105,10 @@ $ligne_loisir = $sql->fetch();//
                         $nbr_loisirs = $loisir->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_loisirs; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <form class="" action="modif_loisir.php" method="post">
-                            <label for="loisir">Formulaire de mise à jour du loisir</label>
+                            <label for="loisir">Formulaire de mise à jour de la compétence</label>
                             <input type="text" name="loisir" class="form-control" value="<?php echo $ligne_loisir['loisir']; ?>">
                             <input hidden name="id_loisir" value="<?php echo $ligne_loisir['id_loisir']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">

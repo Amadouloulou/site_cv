@@ -1,4 +1,31 @@
 <?php require '../connexion/connexion.php' ?>
+
+<?php
+
+    session_start();//a mettre dans toute les pages admin ; SESSION et authentification
+    if(isset($_SESSION['connexion']) && $_SESSION['connexion'] == 'connecté'){
+        $id_utilisateur = $_SESSION['id_utilisateur'];
+        $prenom = $_SESSION['prenom'];
+        $nom = $_SESSION['nom'];
+
+        echo $_SESSION['connexion'];
+    }else{//l'utilisateur n'estb pas connecté
+        header('location:authentification.php');
+    }
+
+    // Pour ce deconnecter
+    if(isset($_GET['quitter'])){//on récupère le terme quitter dans l'url
+        $_SESSION['connexion']='';//on vide les variables de SESSION
+        $_SESSION['id_utilisateur']='';
+        $_SESSION['prenom']='';
+        $_SESSION['nom']='';
+
+        unset($_SESSION['connexion']);
+        session_destroy();
+
+        header('location:index.php');
+    }
+ ?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -67,6 +94,9 @@
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
                     </li>
                 </ul>
             </div>
