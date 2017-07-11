@@ -81,13 +81,19 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
+                        <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="experiences.php">Experiences</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="realisations.php">Réalisations</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="formations.php">Formations</a>
                     </li>
                 </ul>
             </div>
@@ -99,7 +105,7 @@ if(isset($_GET['id_competence'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>COMPETENCES</h1>
+                <h1>Compétences</h1>
                 <div class="col-lg"></h1>
                     <?php
                         $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '2' ");
@@ -127,10 +133,31 @@ if(isset($_GET['id_competence'])){
                             </tbody>
                         </table>
 
-                        <form class="" action="competences.php" method="post">
-                            <label for="competence">Compétence</label>
-                            <input type="text" name="competence" placeholder="Inserez une competence" required>
-                            <input type="submit" name="" value="Ajouter">
+                        <form class="form-horizontal" action="competences.php" method="post">
+
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend>Form Name</legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="competence">Compétence</label>
+                                    <div class="col-md-4">
+                                        <input id="competence" name="competence" type="text" placeholder="compétence" class="form-control input-md">
+
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for=""></label>
+                                    <div class="col-md-4">
+                                        <button id="" name="" class="btn btn-primary">Envoyer</button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
                         </form>
                 </div>
             </div>

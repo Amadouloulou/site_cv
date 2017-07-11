@@ -1,23 +1,20 @@
 <?php require '../connexion/connexion.php' ?>
 <?php
-if(isset($_POST['titre_e'], $_POST['sous_titre_e'], $_POST['date_e'], $_POST['description_e'])){//si on récupere une nouvelle compétence
-    if($_POST['titre_e'], $_POST['sous_titre_e'], $_POST['date_e'], $_POST['description_e']!=''){// si experience est pas vide
-            $titre_e = addslashes($_POST['titre_e']);
-            $sous_titre_e = addslashes($_POST['sous_titre_e']);
-            $date_e = addslashes($_POST['date_e']);
-            $description_e = addslashes($_POST['description_e']);
-            $pdoCV->exec("INSERT INTO t_experiences VALUES (NULL, '$titre_e', '$sous_titre_e', '$date_e', '$description_e','2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/experiences.php");
+if(isset($_POST['realisation'])){//si on récupere une nouvelle compétence
+    if($_POST['realisation']!=''){// si realisation est pas vide
+            $realisation = addslashes($_POST['realisation']);
+            $pdoCV->exec("INSERT INTO t_realisations VALUES (NULL, '$realisation', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            header("location: ../admin/realisations.php");
             exit();
     }//ferme le if
 }//ferme le if isset
 
 // suppression d'une compétence
-if(isset($_GET['id_experience'])){
-    $efface = $_GET['id_experience'];
-    $sql = "DELETE FROM t_experiences WHERE id_experience = '$efface'";
+if(isset($_GET['id_realisation'])){
+    $efface = $_GET['id_realisation'];
+    $sql = "DELETE FROM t_realisations WHERE id_realisation = '$efface'";
     $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/experiences.php");
+    header("location: ../admin/realisations.php");
 
 }
 
@@ -34,7 +31,7 @@ if(isset($_GET['id_experience'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Expérience</title>
+    <title>realisation</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -84,13 +81,13 @@ if(isset($_GET['id_experience'])){
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="competences.php">Compétences</a>
+                        <a class="page-scroll" href="realisations.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="experiences.php">Expérience</a>
+                        <a class="page-scroll" href="experiences.php">Experiences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="realisations.php">Réalisations</a>
@@ -108,35 +105,35 @@ if(isset($_GET['id_experience'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Expériences</h1>
+                <h1>Réalisations</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $titre_e = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '2' ");
-                        $titre_e->execute();// execute la
-                        $nbr_experiences = $titre_e->rowCount();
+                        $realisation = $pdoCV->prepare("SELECT * FROM t_realisations WHERE utilisateur_id = '2' ");
+                        $realisation->execute();// execute la
+                        $nbr_realisations = $realisation->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_experiences; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_realisations; ?> réalisation(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
                                 <tr>
-                                    <th>Expériences</th>
+                                    <th>Compétences</th>
                                     <th>Modifier</th>
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
-                                    <?php while($ligne_titre = $titre_e->fetch()){ ?>
-                                    <td><?php echo $ligne_titre['titre_e']; ?></td>
-                                    <td><a href="modif_experience.php?id_experience=<?php echo $ligne_titre['id_experience']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="experiences.php?id_experience=<?php echo $ligne_titre['id_experience']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <?php while($ligne_realisation = $realisation->fetch()){ ?>
+                                    <td><?php echo $ligne_realisation['realisation']; ?></td>
+                                    <td><a href="modif_realisation.php?id_realisation=<?php echo $ligne_realisation['id_realisation']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td><a href="realisations.php?id_realisation=<?php echo $ligne_realisation['id_realisation']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
 
-                        <form class="form-horizontal" action="experiences.php" method="post">
+                        <form class="form-horizontal" action="realisations.php" method="post">
                             <fieldset>
                                 <!-- Form Name -->
                                 <legend>Form Name</legend>
@@ -196,6 +193,7 @@ if(isset($_GET['id_experience'])){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="amadou_js.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>

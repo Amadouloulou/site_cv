@@ -89,6 +89,12 @@ if(isset($_GET['id_loisir'])){
                     <li>
                         <a class="page-scroll" href="experiences.php">Expériences</a>
                     </li>
+                    <li>
+                        <a class="page-scroll" href="realisations.php">Réalisations</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="formations.php">Formations</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -119,7 +125,7 @@ if(isset($_GET['id_loisir'])){
                                 <tr>
                                     <?php while($ligne_loisir = $loisir->fetch()){ ?>
                                     <td><?php echo $ligne_loisir['loisir']; ?></td>
-                                    <td><a href="#"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td><a href="modif_loisir.php"><span class="glyphicon glyphicon-pencil"></span></a></td>
                                     <td><a href="loisirs.php?id_loisir=<?php echo $ligne_loisir['id_loisir'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
@@ -127,10 +133,31 @@ if(isset($_GET['id_loisir'])){
                             </tbody>
                         </table>
 
-                        <form class="" action="loisirs.php" method="post">
-                            <label for="loisir">Loisir</label>
-                            <input type="text" name="loisir" placeholder="Inserez une loisir" required>
-                            <input type="submit" name="" value="Ajouter">
+                        <form class="form-horizontal" action="loisirs.php" method="post">
+
+                            <fieldset>
+
+                                <!-- Form Name -->
+                                <legend>Form Name</legend>
+
+                                <!-- Text input-->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="competence">Compétence</label>
+                                    <div class="col-md-4">
+                                        <input id="competence" name="competence" type="text" placeholder="compétence" class="form-control input-md">
+
+                                    </div>
+                                </div>
+
+                                <!-- Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for=""></label>
+                                    <div class="col-md-4">
+                                        <button id="" name="" class="btn btn-primary">Envoyer</button>
+                                    </div>
+                                </div>
+
+                            </fieldset>
                         </form>
                 </div>
             </div>

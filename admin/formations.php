@@ -1,23 +1,20 @@
 <?php require '../connexion/connexion.php' ?>
 <?php
-if(isset($_POST['titre_e'], $_POST['sous_titre_e'], $_POST['date_e'], $_POST['description_e'])){//si on récupere une nouvelle compétence
-    if($_POST['titre_e'], $_POST['sous_titre_e'], $_POST['date_e'], $_POST['description_e']!=''){// si experience est pas vide
-            $titre_e = addslashes($_POST['titre_e']);
-            $sous_titre_e = addslashes($_POST['sous_titre_e']);
-            $date_e = addslashes($_POST['date_e']);
-            $description_e = addslashes($_POST['description_e']);
-            $pdoCV->exec("INSERT INTO t_experiences VALUES (NULL, '$titre_e', '$sous_titre_e', '$date_e', '$description_e','2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/experiences.php");
+if(isset($_POST['formation'])){//si on récupere une nouvelle compétence
+    if($_POST['formation']!=''){// si formation est pas vide
+            $formation = addslashes($_POST['formation']);
+            $pdoCV->exec("INSERT INTO t_formations VALUES (NULL, '$formation', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            header("location: ../admin/formations.php");
             exit();
     }//ferme le if
 }//ferme le if isset
 
 // suppression d'une compétence
-if(isset($_GET['id_experience'])){
-    $efface = $_GET['id_experience'];
-    $sql = "DELETE FROM t_experiences WHERE id_experience = '$efface'";
+if(isset($_GET['id_formation'])){
+    $efface = $_GET['id_formation'];
+    $sql = "DELETE FROM t_formations WHERE id_formation = '$efface'";
     $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/experiences.php");
+    header("location: ../admin/formations.php");
 
 }
 
@@ -34,7 +31,7 @@ if(isset($_GET['id_experience'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Expérience</title>
+    <title>Formation</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -90,7 +87,7 @@ if(isset($_GET['id_experience'])){
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="experiences.php">Expérience</a>
+                        <a class="page-scroll" href="experiences.php">Experiences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="realisations.php">Réalisations</a>
@@ -108,35 +105,35 @@ if(isset($_GET['id_experience'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Expériences</h1>
+                <h1>Formations</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $titre_e = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '2' ");
-                        $titre_e->execute();// execute la
-                        $nbr_experiences = $titre_e->rowCount();
+                        $formation = $pdoCV->prepare("SELECT * FROM t_formations WHERE utilisateur_id = '2' ");
+                        $formation->execute();// execute la
+                        $nbr_formations = $formation->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_experiences; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_formations; ?> formation(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
                                 <tr>
-                                    <th>Expériences</th>
+                                    <th>formation</th>
                                     <th>Modifier</th>
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
-                                    <?php while($ligne_titre = $titre_e->fetch()){ ?>
-                                    <td><?php echo $ligne_titre['titre_e']; ?></td>
-                                    <td><a href="modif_experience.php?id_experience=<?php echo $ligne_titre['id_experience']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="experiences.php?id_experience=<?php echo $ligne_titre['id_experience']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <?php while($ligne_formation = $formation->fetch()){ ?>
+                                    <td><?php echo $ligne_formation['formation']; ?></td>
+                                    <td><a href="modif_formation.php?id_formation=<?php echo $ligne_formation['id_formation']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td><a href="formations.php?id_formation=<?php echo $ligne_formation['id_formation']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
 
-                        <form class="form-horizontal" action="experiences.php" method="post">
+                        <form class="form-horizontal" action="formations.php" method="post">
                             <fieldset>
                                 <!-- Form Name -->
                                 <legend>Form Name</legend>
@@ -150,7 +147,7 @@ if(isset($_GET['id_experience'])){
                                     </div>
                                 </div>
 
-                        <!-- Text input-->
+                            <!-- Text input-->
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="sous_titre_">Sous-titre</label>
                                 <div class="col-md-4">
@@ -168,7 +165,7 @@ if(isset($_GET['id_experience'])){
                                 </div>
                             </div>
 
-                        <!-- Textarea -->
+                            <!-- Textarea -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="description_">Text Area</label>
                                 <div class="col-md-4">
@@ -176,7 +173,7 @@ if(isset($_GET['id_experience'])){
                                 </div>
                             </div>
 
-                        <!-- Button -->
+                            <!-- Button -->
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for=""></label>
                                 <div class="col-md-4">
@@ -196,6 +193,7 @@ if(isset($_GET['id_experience'])){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+    <script src="amadou_js.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>

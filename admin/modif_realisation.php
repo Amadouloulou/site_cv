@@ -2,20 +2,20 @@
 
 <?php
 // gestion des contenus, mise à jour d'une compétence
-if(isset($_POST['loisir'])){// par le nom du premier input
+if(isset($_POST['realisation'])){// par le nom du premier input
 
 
-    $loisir = addslashes($_POST['loisir']);
-    $id_loisir = $_POST['id_loisir'];
-    $pdoCV->query("UPDATE t_loisirs SET loisir='$loisir' WHERE id_loisir='$id_loisir'");
+    $realisation = addslashes($_POST['realisation']);
+    $id_realisation = $_POST['id_realisation'];
+    $pdoCV->query("UPDATE t_realisations SET realisation='$realisation' WHERE id_realisation='$id_realisation'");
 
-    header('location: ../admin/loisirs.php');//le header pour revenir à la liste des compétences de l'utilisation
+    header('location: ../admin/realisations.php');//le header pour revenir à la liste des compétences de l'utilisation
     exit();
 }
 //je récupère la compétence
-$id_loisir = $_GET['id_loisir']; // par l'id et $_GET
-$sql = $pdoCV->query("SELECT * FROM t_loisirs WHERE id_loisir = '$id_loisir'"); // la requête égale à l'id
-$ligne_loisir = $sql->fetch();//
+$id_realisation = $_GET['id_realisation']; // par l'id et $_GET
+$sql = $pdoCV->query("SELECT * FROM t_realisations WHERE id_realisation = '$id_realisation'"); // la requête égale à l'id
+$ligne_realisation = $sql->fetch();//
  ?>
 
 <!DOCTYPE html>
@@ -79,7 +79,7 @@ $ligne_loisir = $sql->fetch();//
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="loisirs.php">Compétences</a>
+                        <a class="page-scroll" href="realisations.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -97,20 +97,20 @@ $ligne_loisir = $sql->fetch();//
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Mise à jour d'un loisir</h1>
+                <h1>Mise à jour d'une réalisation</h1>
                 <div class="col-lg"></div>
                     <?php
-                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '2' ");
-                        $loisir->execute();// execute la
-                        $nbr_loisirs = $loisir->rowCount();
+                        $realisation = $pdoCV->prepare("SELECT * FROM t_realisations WHERE utilisateur_id = '2' ");
+                        $realisation->execute();// execute la
+                        $nbr_realisations = $realisation->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_realisations; ?> réalisation(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <form class="" action="modif_loisir.php" method="post">
-                            <label for="loisir">Formulaire de mise à jour d'un loisir</label>
-                            <input type="text" name="loisir" class="form-control" value="<?php echo $ligne_loisir['loisir']; ?>">
-                            <input hidden name="id_loisir" value="<?php echo $ligne_loisir['id_loisir']; ?>">
+                        <form class="" action="modif_realisation.php" method="post">
+                            <label for="realisation">Formulaire de mise à jour de la réalisation</label>
+                            <input type="text" name="realisation" class="form-control" value="<?php echo $ligne_realisation['realisation']; ?>">
+                            <input hidden name="id_realisation" value="<?php echo $ligne_realisation['id_realisation']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
                 </div>
