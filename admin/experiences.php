@@ -1,27 +1,55 @@
 <?php require '../connexion/connexion.php' ?>
 <?php
-if(isset($_POST['titre_e'], $_POST['sous_titre_e'], $_POST['date_e'], $_POST['description_e'])){//si on récupere une nouvelle compétence
-    if($_POST['titre_e'], $_POST['sous_titre_e'], $_POST['date_e'], $_POST['description_e']!=''){// si experience est pas vide
-            $titre_e = addslashes($_POST['titre_e']);
-            $sous_titre_e = addslashes($_POST['sous_titre_e']);
-            $date_e = addslashes($_POST['date_e']);
-            $description_e = addslashes($_POST['description_e']);
-            $pdoCV->exec("INSERT INTO t_experiences VALUES (NULL, '$titre_e', '$sous_titre_e', '$date_e', '$description_e','2')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/experiences.php");
-            exit();
-    }//ferme le if
-}//ferme le if isset
 
-// suppression d'une compétence
-if(isset($_GET['id_experience'])){
-    $efface = $_GET['id_experience'];
-    $sql = "DELETE FROM t_experiences WHERE id_experience = '$efface'";
-    $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/experiences.php");
+session_start();// à mettre dans toutes les pages de l'admin ; SESSION et authentification
+	if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){
+		$id_utilisateur=$_SESSION['id_utilisateur'];
+		$prenom=$_SESSION['prenom'];
+		$nom=$_SESSION['nom'];
 
+		//echo $_SESSION['connexion'];
+
+	}else{//l'utilisateur n'est pas connecté
+		header('location:authentification.php');
+	}
+//pour se déconnecter
+if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
+
+	$_SESSION['connexion']='';// on vide les variables de session
+	$_SESSION['id_utilisateur']='';
+	$_SESSION['prenom']='';
+	$_SESSION['nom']='';
+
+	unset($_SESSION['connexion']);
+	session_destroy();
+
+	header('location:../index.php');
 }
+	?>
+<?php
+	//gestion des contenus
+	//insertion d'une expérience
+		if(isset($_POST['titre_e'])){//si on récupère une nelle expérience
+			if($_POST['titre_e']!='' && $_POST['description_e']!='' && $_POST['dates_e']!=''){// si expérience et les autres champs ne sont pas vide
+				$titre_e = addslashes($_POST['titre_e']);
+				$sous_titre_e = addslashes($_POST['sous_titre_e']);
+            	$dates_e = addslashes($_POST['dates_e']);
+            	$description_e = addslashes($_POST['description_e']);
 
- ?>
+				$pdoCV->exec(" INSERT INTO t_experiences VALUES (NULL, '$titre_e', '$sous_titre_e',  '$dates_e', '$description_e', '$id_utilisateur') ");//mettre $id_utilisateur quand on l'aura en variable de session
+				header("location: ../admin/experiences.php");
+				exit();
+			}//ferme le if
+		}//ferme le if isset
+
+	//suppression d'une expérience
+		if(isset($_GET['id_experience'])){
+			$efface = $_GET['id_experience'];
+			$sql = " DELETE FROM t_experiences WHERE id_experience = '$efface' ";
+			$pdoCV -> query($sql);// ou on peut avec exec
+			header("location: ../admin/experiences.php");
+		}
+	?>
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -54,8 +82,8 @@ if(isset($_GET['id_experience'])){
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
-      $ligne = $sql->fetch(); //va chercher
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -111,9 +139,9 @@ if(isset($_GET['id_experience'])){
                 <h1>Expériences</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $titre_e = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '2' ");
-                        $titre_e->execute();// execute la
-                        $nbr_experiences = $titre_e->rowCount();
+                        $titre = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '$id_utilisateur' ORDER BY id_experience DESC");// prépare la requête
+                        $titre->execute();// execute la
+                        $nbr_experiences = $titre->rowCount();//compte les lignes
 
                     ?>
                     <p> Il y a <?php echo $nbr_experiences; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
@@ -122,17 +150,22 @@ if(isset($_GET['id_experience'])){
                             <tbody>
                                 <tr>
                                     <th>Expériences</th>
+                                    <th>Lieu</th>
+                                    <th>Année</th>
+                                    <th>Description</th>
                                     <th>Modifier</th>
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
-                                    <?php while($ligne_titre = $titre_e->fetch()){ ?>
-                                    <td><?php echo $ligne_titre['titre_e']; ?></td>
-                                    <td><a href="modif_experience.php?id_experience=<?php echo $ligne_titre['id_experience']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="experiences.php?id_experience=<?php echo $ligne_titre['id_experience']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
-
-                                </tr>
-                            <?php } ?>
+									<?php while ($ligne_experience = $sql->fetch()) { ?>
+									<td><?php echo $ligne_experience['titre_e']; ?></td>
+									<td><?php echo $ligne_experience['sous_titre_e']; ?></td>
+									<td><?php echo $ligne_experience['description_e']; ?></td>
+									<td><?php echo $ligne_experience['dates_e']; ?></td>
+									<td><a href="modif_experience.php?id_experience=<?php echo $ligne_experience['id_experience']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
+									<td><a class="supprimer" href="experiences.php?id_experience=<?php echo $ligne_experience['id_experience']; ?>"><span class="glyphicon glyphicon-trash"></span></a></span></td>
+								</tr>
+									<?php } ?>
                             </tbody>
                         </table>
 
@@ -143,36 +176,36 @@ if(isset($_GET['id_experience'])){
 
                                 <!-- Text input-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="titre_">Titre</label>
+                                    <label class="col-md-4 control-label" for="titre_e">Titre</label>
                                     <div class="col-md-4">
-                                        <input id="titre_" name="titre_" type="text" placeholder="placeholder" class="form-control input-md">
+                                        <input id="titre_e" name="titre_e" type="text" placeholder="placeholder" class="form-control input-md">
                                         <span class="help-block">help</span>
                                     </div>
                                 </div>
 
                         <!-- Text input-->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="sous_titre_">Sous-titre</label>
+                                <label class="col-md-4 control-label" for="sous_titre_e">Sous-titre</label>
                                 <div class="col-md-4">
-                                    <input id="sous_titre_" name="sous_titre_" type="text" placeholder="placeholder" class="form-control input-md">
+                                    <input id="sous_titre_e" name="sous_titre_e" type="text" placeholder="placeholder" class="form-control input-md">
                                     <span class="help-block">help</span>
                                 </div>
                             </div>
 
                             <!-- Text input-->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="date_">Date</label>
+                                <label class="col-md-4 control-label" for="date_e">Date</label>
                                 <div class="col-md-4">
-                                    <input id="date_" name="date_" type="text" placeholder="placeholder" class="form-control input-md">
+                                    <input id="date_e" name="date_e" type="text" placeholder="placeholder" class="form-control input-md">
                                     <span class="help-block">help</span>
                                 </div>
                             </div>
 
                         <!-- Textarea -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="description_">Text Area</label>
+                                <label class="col-md-4 control-label" for="description_e">Text Area</label>
                                 <div class="col-md-4">
-                                    <textarea class="form-control" id="description_" name="description_">default text</textarea>
+                                    <textarea class="form-control" id="description_e" name="description_e">default text</textarea>
                                 </div>
                             </div>
 

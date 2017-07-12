@@ -3,21 +3,20 @@
 
 session_start(); // à mettre tout en haut du fichier .php, cette fonction propre à PHP servira à maintenir la $_SESSION
 
-$msg_authentification_erreur='';
+$msg_authentification_erreur='';// on initialise la variable en cas d'erreur
 
-if(isset($_POST)) {
-    echo 'test';
+if(isset($_POST['connexion'])) {// on envoie le form avec le name du bouton (on a cliqué sur le bouton)
     $email = addslashes($_POST['email']);
     $mdp = addslashes($_POST['mdp']);
 
-    $sql = $pdoCV->prepare("SELECT * FROM t_utilisateurs WHERE email='$email' AND mdp='$mdp' ");
+    $sql = $pdoCV->prepare("SELECT * FROM t_utilisateurs WHERE email='$email' AND mdp='$mdp' ");// on vérifie courriel et mdp et ...
     $sql->execute();
-    $nbr_utilisateur = $sql->rowCount();
+    $nbr_utilisateur = $sql->rowCount();//on compte s'il est ds la table, le compte répond 1 s'il y est et 0 s'il n'y est pas
 
-    if($nbr_utilisateur == 0){
+    if($nbr_utilisateur == 0){// il n'y est pas !
         $msg_authentification_erreur="Erreur d'authentification !";
-    }else{
-        $ligne_utilisateur = $sql->fetch();
+    }else{//on le trouve il est inscrit !
+        $ligne_utilisateur = $sql->fetch();// on retrouve ses infos
 
         $_SESSION['connexion']='connecté';
         $_SESSION['id_utilisateur']=$ligne_utilisateur['id_utilisateur'];
@@ -26,8 +25,7 @@ if(isset($_POST)) {
 
         header('location:index.php');
     }
-}
-var_dump($_SESSION);
+}//ferme if isset
 ?>
 
 <!DOCTYPE html>

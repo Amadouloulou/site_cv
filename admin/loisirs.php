@@ -3,7 +3,7 @@
 if(isset($_POST['loisir'])){//si on récupere un nouveau loisir
     if($_POST['loisir']!=''){// si loisir est pas vide
             $loisir = addslashes($_POST['loisir']);
-            $pdoCV->exec("INSERT INTO t_loisirs VALUES (NULL, '$loisir', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            $pdoCV->exec("INSERT INTO t_loisirs VALUES (NULL, '$loisir', '$id_utilisateur')"); //mettre $id_utilisateur quand on l'aura en variable de session
             header("location: ../admin/loisirs.php");
             exit();
     }//ferme le if
@@ -51,7 +51,7 @@ if(isset($_GET['id_loisir'])){
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
       $ligne = $sql->fetch(); //va chercher
  ?>
 
@@ -108,7 +108,7 @@ if(isset($_GET['id_loisir'])){
                 <h1>Loisirs</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '2' ");
+                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '$id_utilisateur' ");
                         $loisir->execute();// execute la
                         $nbr_loisirs = $loisir->rowCount();
 
@@ -133,7 +133,7 @@ if(isset($_GET['id_loisir'])){
                             </tbody>
                         </table>
 
-                        <form class="form-horizontal" action="loisirs.php" method="post">
+                        <form class="form-horizontal" action="" method="post">
 
                             <fieldset>
 
@@ -142,9 +142,9 @@ if(isset($_GET['id_loisir'])){
 
                                 <!-- Text input-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="competence">Compétence</label>
+                                    <label class="col-md-4 control-label" for="competence">Loisir</label>
                                     <div class="col-md-4">
-                                        <input id="competence" name="competence" type="text" placeholder="compétence" class="form-control input-md">
+                                        <input id="loisir" name="loisir" type="text" placeholder="loisir" class="form-control input-md">
 
                                     </div>
                                 </div>
@@ -153,7 +153,7 @@ if(isset($_GET['id_loisir'])){
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for=""></label>
                                     <div class="col-md-4">
-                                        <button id="" name="" class="btn btn-primary">Envoyer</button>
+                                        <button type="submit" id="" name="" class="btn btn-primary">Envoyer</button>
                                     </div>
                                 </div>
 

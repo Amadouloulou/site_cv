@@ -1,15 +1,18 @@
 <?php require '../connexion/connexion.php' ?>
+
 <?php
-if(isset($_POST['competence'])){//si on récupere une nouvelle compétence
+//gestion des contenus
+//insertion d'une compétence
+if(isset($_POST['competence'])){//si on récupere un nouveau competence
     if($_POST['competence']!=''){// si competence est pas vide
             $competence = addslashes($_POST['competence']);
-            $pdoCV->exec("INSERT INTO t_competences VALUES (NULL, '$competence', '2')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            $pdoCV->exec("INSERT INTO t_competences VALUES (NULL, '$competence', '$id_utilisateur')"); //mettre $id_utilisateur quand on l'aura en variable de session
             header("location: ../admin/competences.php");
             exit();
     }//ferme le if
 }//ferme le if isset
 
-// suppression d'une compétence
+// suppression d'un competence
 if(isset($_GET['id_competence'])){
     $efface = $_GET['id_competence'];
     $sql = "DELETE FROM t_competences WHERE id_competence = '$efface'";
@@ -31,7 +34,7 @@ if(isset($_GET['id_competence'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Compétences</title>
+    <title>competences</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -51,7 +54,7 @@ if(isset($_GET['id_competence'])){
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
       $ligne = $sql->fetch(); //va chercher
  ?>
 
@@ -84,10 +87,10 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="loisirs.php">Loisirs</a>
+                        <a class="page-scroll" href="competences.php">competences</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="experiences.php">Experiences</a>
+                        <a class="page-scroll" href="experiences.php">Expériences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="realisations.php">Réalisations</a>
@@ -105,20 +108,20 @@ if(isset($_GET['id_competence'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Compétences</h1>
+                <h1>competences</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '2' ");
+                        $competence = $pdoCV->prepare("SELECT * FROM t_competences WHERE utilisateur_id = '$id_utilisateur' ");// prépare la requête
                         $competence->execute();// execute la
-                        $nbr_competences = $competence->rowCount();
+                        $nbr_competences = $competence->rowCount();//compte les lignes
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_competences; ?> competence(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
                                 <tr>
-                                    <th>Compétences</th>
+                                    <th>competence</th>
                                     <th>Modifier</th>
                                     <th>Supprimer</th>
                                 </tr>
@@ -126,14 +129,14 @@ if(isset($_GET['id_competence'])){
                                     <?php while($ligne_competence = $competence->fetch()){ ?>
                                     <td><?php echo $ligne_competence['competence']; ?></td>
                                     <td><a href="modif_competence.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="competences.php?id_competence=<?php echo $ligne_competence['id_competence']; ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <td><a href="competences.php?id_competence=<?php echo $ligne_competence['id_competence'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
 
-                        <form class="form-horizontal" action="competences.php" method="post">
+                        <form class="form-horizontal" action="" method="post">
 
                             <fieldset>
 
@@ -153,7 +156,7 @@ if(isset($_GET['id_competence'])){
                                 <div class="form-group">
                                     <label class="col-md-4 control-label" for=""></label>
                                     <div class="col-md-4">
-                                        <button id="" name="" class="btn btn-primary">Envoyer</button>
+                                        <button type="submit" id="" name="" class="btn btn-primary">Envoyer</button>
                                     </div>
                                 </div>
 
@@ -169,7 +172,6 @@ if(isset($_GET['id_competence'])){
 
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="amadou_js.js"></script>
 
     <!-- Scrolling Nav JavaScript -->
     <script src="js/jquery.easing.min.js"></script>

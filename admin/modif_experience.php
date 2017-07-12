@@ -1,21 +1,49 @@
 <?php require '../connexion/connexion.php' ?>
 
 <?php
+
+session_start();// à mettre dans toutes les pages de l'admin ; SESSION et authentification
+	if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){
+		$id_utilisateur=$_SESSION['id_utilisateur'];
+		$prenom=$_SESSION['prenom'];
+		$nom=$_SESSION['nom'];
+
+		//echo $_SESSION['connexion'];
+
+	}else{//l'utilisateur n'est pas connecté
+		header('location:authentification.php');
+	}
+//pour se déconnecter
+if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
+
+	$_SESSION['connexion']='';// on vide les variables de session
+	$_SESSION['id_utilisateur']='';
+	$_SESSION['prenom']='';
+	$_SESSION['nom']='';
+
+	unset($_SESSION['connexion']);
+	session_destroy();
+
+	header('location:../index.php');
+}
+	?>
+
+<?php
 // gestion des contenus, mise à jour d'une compétence
-if(isset($_POST['formation'])){// par le nom du premier input
+if(isset($_POST['experience'])){// par le nom du premier input
 
 
-    $formation = addslashes($_POST['formation']);
-    $id_formation = $_POST['id_formation'];
-    $pdoCV->query("UPDATE t_formations SET formation='$formation' WHERE id_formation='$id_formation'");
+    $experience = addslashes($_POST);
+    $id_experience = $_POST['id_experience'];
+    $pdoCV->query("UPDATE t_experiences SET experience='$experience' WHERE id_experience='$id_experience'");
 
-    header('location: ../admin/formations.php');//le header pour revenir à la liste des compétences de l'utilisation
+    header('location: ../admin/experiences.php');//le header pour revenir à la liste des compétences de l'utilisation
     exit();
 }
 //je récupère la compétence
-$id_formation = $_GET['id_formation']; // par l'id et $_GET
-$sql = $pdoCV->query("SELECT * FROM t_formations WHERE id_formation = '$id_formation'"); // la requête égale à l'id
-$ligne_formation = $sql->fetch();//
+$id_experience = $_GET['id_experience']; // par l'id et $_GET
+$sql = $pdoCV->query("SELECT * FROM t_experiences WHERE id_experience = '$id_experience'"); // la requête égale à l'id
+$ligne_experience = $sql->fetch();//
  ?>
 
 <!DOCTYPE html>
@@ -79,7 +107,7 @@ $ligne_formation = $sql->fetch();//
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="formations.php">Compétences</a>
+                        <a class="page-scroll" href="experiences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -97,20 +125,20 @@ $ligne_formation = $sql->fetch();//
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Mise à jour d'une formation</h1>
+                <h1>Mise à jour d'une compétence</h1>
                 <div class="col-lg"></div>
                     <?php
-                        $formation = $pdoCV->prepare("SELECT * FROM t_formations WHERE utilisateur_id = '2' ");
-                        $formation->execute();// execute la
-                        $nbr_formations = $formation->rowCount();
+                        $experience = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '2' ");
+                        $experience->execute();// execute la
+                        $nbr_experiences = $experience->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_formations; ?> formation(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_experiences; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <form class="" action="modif_formation.php" method="post">
-                            <label for="formation">Formulaire de mise à jour de la formation</label>
-                            <input type="text" name="formation" class="form-control" value="<?php echo $ligne_formation['formation']; ?>">
-                            <input hidden name="id_formation" value="<?php echo $ligne_formation['id_formation']; ?>">
+                        <form class="" action="experiences.php" method="post">
+                            <label for="experience">Formulaire de mise à jour de l'expérience'</label>
+                            <input type="text" name="experience" class="form-control" value="<?php echo $ligne_experience['experience']; ?>">
+                            <input hidden name="id_experience" value="<?php echo $ligne_experience['id_experience']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
                 </div>

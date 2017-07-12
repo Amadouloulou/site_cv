@@ -1,7 +1,5 @@
 <?php require '../connexion/connexion.php' ?>
-
 <?php
-
     session_start();//a mettre dans toute les pages admin ; SESSION et authentification
     if(isset($_SESSION['connexion']) && $_SESSION['connexion'] == 'connecté'){
         $id_utilisateur = $_SESSION['id_utilisateur'];
@@ -57,8 +55,8 @@
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
-      $ligne = $sql->fetch(); //va chercher
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -110,9 +108,9 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1> Admin site CV <?php  echo $ligne['prenom'].' '.$ligne['nom']; ?></h1>
+                    <h1> Admin site CV <?php  echo $ligne_utilisateur['prenom'].' '.$ligne_utilisateur['nom']; ?></h1>
                     <?php
-                          $sql = $pdoCV->query(" SELECT * FROM t_titres_cv WHERE utilisateur_id='0' ");
+                          $sql = $pdoCV->query(" SELECT * FROM t_titres_cv WHERE utilisateur_id ='$id_utilisateur' ");
                           $ligne_utilisateur = $sql->fetch(); //va chercher
                      ?>
                     <p><?php  echo $ligne_utilisateur['titre_cv'].' '.$ligne_utilisateur['accroche']; ?></p>
