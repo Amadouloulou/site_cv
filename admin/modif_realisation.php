@@ -1,11 +1,39 @@
 <?php require '../connexion/connexion.php' ?>
 
 <?php
+
+session_start();// à mettre dans toutes les pages de l'admin ; SESSION et authentification
+	if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){
+		$id_utilisateur=$_SESSION['id_utilisateur'];
+		$prenom=$_SESSION['prenom'];
+		$nom=$_SESSION['nom'];
+
+		//echo $_SESSION['connexion'];
+
+	}else{//l'utilisateur n'est pas connecté
+		header('location:authentification.php');
+	}
+//pour se déconnecter
+if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
+
+	$_SESSION['connexion']='';// on vide les variables de session
+	$_SESSION['id_utilisateur']='';
+	$_SESSION['prenom']='';
+	$_SESSION['nom']='';
+
+	unset($_SESSION['connexion']);
+	session_destroy();
+
+	header('location:../index.php');
+}
+	?>
+
+<?php
 // gestion des contenus, mise à jour d'une compétence
 if(isset($_POST['realisation'])){// par le nom du premier input
 
 
-    $realisation = addslashes($_POST['realisation']);
+    $realisation = addslashes($_POST);
     $id_realisation = $_POST['id_realisation'];
     $pdoCV->query("UPDATE t_realisations SET realisation='$realisation' WHERE id_realisation='$id_realisation'");
 
@@ -49,7 +77,7 @@ $ligne_realisation = $sql->fetch();//
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
       $ligne = $sql->fetch(); //va chercher
  ?>
 
@@ -79,7 +107,7 @@ $ligne_realisation = $sql->fetch();//
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="realisations.php">Compétences</a>
+                        <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -97,22 +125,33 @@ $ligne_realisation = $sql->fetch();//
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Mise à jour d'une réalisation</h1>
+                <h1>Mise à jour d'une compétence</h1>
                 <div class="col-lg"></div>
                     <?php
-                        $realisation = $pdoCV->prepare("SELECT * FROM t_realisations WHERE utilisateur_id = '2' ");
+                        $realisation = $pdoCV->prepare("SELECT * FROM t_realisations WHERE utilisateur_id = '$id_utilisateur
+							' ");
                         $realisation->execute();// execute la
                         $nbr_realisations = $realisation->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_realisations; ?> réalisation(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_realisations; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <form class="" action="modif_realisation.php" method="post">
-                            <label for="realisation">Formulaire de mise à jour de la réalisation</label>
-                            <input type="text" name="realisation" class="form-control" value="<?php echo $ligne_realisation['realisation']; ?>">
+                        <form class="" action="realisations.php" method="post">
+                            <label for="titre_r">Formulaire de mise à jour du titre</label>
+                            <input type="text" name="titre_r" class="form-control" value="<?php echo $ligne_realisation['titre_r']; ?>">
+
+							<label for="sous_titre_r">Formulaire de mise à jour du sous_titre</label>
+                            <input type="text" name="sous_titre_r" class="form-control" value="<?php echo $ligne_realisation['sous_titre_r']; ?>">
+
+							<label for="dates_r">Formulaire de mise à jour de l'année</label>
+                            <input type="text" name="dates_r" class="form-control" value="<?php echo $ligne_realisation['dates_r']; ?>">
+
+							<label for="description_r">Formulaire de mise à jour de la description</label>
+                            <input type="text" name="description_r" class="form-control" value="<?php echo $ligne_realisation['description_r']; ?>">
                             <input hidden name="id_realisation" value="<?php echo $ligne_realisation['id_realisation']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
+
                 </div>
             </div>
         </div>

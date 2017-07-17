@@ -1,11 +1,39 @@
 <?php require '../connexion/connexion.php' ?>
 
 <?php
+
+session_start();// à mettre dans toutes les pages de l'admin ; SESSION et authentification
+	if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){
+		$id_utilisateur=$_SESSION['id_utilisateur'];
+		$prenom=$_SESSION['prenom'];
+		$nom=$_SESSION['nom'];
+
+		//echo $_SESSION['connexion'];
+
+	}else{//l'utilisateur n'est pas connecté
+		header('location:authentification.php');
+	}
+//pour se déconnecter
+if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
+
+	$_SESSION['connexion']='';// on vide les variables de session
+	$_SESSION['id_utilisateur']='';
+	$_SESSION['prenom']='';
+	$_SESSION['nom']='';
+
+	unset($_SESSION['connexion']);
+	session_destroy();
+
+	header('location:../index.php');
+}
+	?>
+
+<?php
 // gestion des contenus, mise à jour d'une compétence
 if(isset($_POST['formation'])){// par le nom du premier input
 
 
-    $formation = addslashes($_POST['formation']);
+    $formation = addslashes($_POST);
     $id_formation = $_POST['id_formation'];
     $pdoCV->query("UPDATE t_formations SET formation='$formation' WHERE id_formation='$id_formation'");
 
@@ -49,7 +77,7 @@ $ligne_formation = $sql->fetch();//
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
       $ligne = $sql->fetch(); //va chercher
  ?>
 
@@ -79,7 +107,7 @@ $ligne_formation = $sql->fetch();//
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="formations.php">Compétences</a>
+                        <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
@@ -97,22 +125,33 @@ $ligne_formation = $sql->fetch();//
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Mise à jour d'une formation</h1>
+                <h1>Mise à jour d'une compétence</h1>
                 <div class="col-lg"></div>
                     <?php
-                        $formation = $pdoCV->prepare("SELECT * FROM t_formations WHERE utilisateur_id = '2' ");
+                        $formation = $pdoCV->prepare("SELECT * FROM t_formations WHERE utilisateur_id = '$id_utilisateur
+							' ");
                         $formation->execute();// execute la
                         $nbr_formations = $formation->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_formations; ?> formation(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_formations; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <form class="" action="modif_formation.php" method="post">
-                            <label for="formation">Formulaire de mise à jour de la formation</label>
-                            <input type="text" name="formation" class="form-control" value="<?php echo $ligne_formation['formation']; ?>">
+                        <form class="" action="formations.php" method="post">
+                            <label for="titre_f">Formulaire de mise à jour du titre</label>
+                            <input type="text" name="titre_f" class="form-control" value="<?php echo $ligne_formation['titre_f']; ?>">
+
+							<label for="sous_titre_f">Formulaire de mise à jour du sous_titre</label>
+                            <input type="text" name="sous_titre_f" class="form-control" value="<?php echo $ligne_formation['sous_titre_f']; ?>">
+
+							<label for="dates_f">Formulaire de mise à jour de l'année</label>
+                            <input type="text" name="dates_f" class="form-control" value="<?php echo $ligne_formation['dates_f']; ?>">
+
+							<label for="description_f">Formulaire de mise à jour de la description</label>
+                            <input type="text" name="description_f" class="form-control" value="<?php echo $ligne_formation['description_f']; ?>">
                             <input hidden name="id_formation" value="<?php echo $ligne_formation['id_formation']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
+
                 </div>
             </div>
         </div>

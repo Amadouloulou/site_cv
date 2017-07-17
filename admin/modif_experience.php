@@ -77,7 +77,7 @@ $ligne_experience = $sql->fetch();//
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
       $ligne = $sql->fetch(); //va chercher
  ?>
 
@@ -128,7 +128,8 @@ $ligne_experience = $sql->fetch();//
                 <h1>Mise à jour d'une compétence</h1>
                 <div class="col-lg"></div>
                     <?php
-                        $experience = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '2' ");
+                        $experience = $pdoCV->prepare("SELECT * FROM t_experiences WHERE utilisateur_id = '$id_utilisateur
+							' ");
                         $experience->execute();// execute la
                         $nbr_experiences = $experience->rowCount();
 
@@ -136,11 +137,21 @@ $ligne_experience = $sql->fetch();//
                     <p> Il y a <?php echo $nbr_experiences; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <form class="" action="experiences.php" method="post">
-                            <label for="experience">Formulaire de mise à jour de l'expérience'</label>
-                            <input type="text" name="experience" class="form-control" value="<?php echo $ligne_experience['experience']; ?>">
+                            <label for="titre_e">Formulaire de mise à jour du titre</label>
+                            <input type="text" name="titre_e" class="form-control" value="<?php echo $ligne_experience['titre_e']; ?>">
+
+							<label for="titre_e">Formulaire de mise à jour du sous_titre</label>
+                            <input type="text" name="sous_titre_e" class="form-control" value="<?php echo $ligne_experience['sous_titre_e']; ?>">
+
+							<label for="titre_e">Formulaire de mise à jour de l'année</label>
+                            <input type="text" name="dates_e" class="form-control" value="<?php echo $ligne_experience['dates_e']; ?>">
+
+							<label for="titre_e">Formulaire de mise à jour de la description</label>
+                            <input type="text" name="description_e" class="form-control" value="<?php echo $ligne_experience['description_e']; ?>">
                             <input hidden name="id_experience" value="<?php echo $ligne_experience['id_experience']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">
                         </form>
+
                 </div>
             </div>
         </div>

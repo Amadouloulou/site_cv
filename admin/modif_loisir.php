@@ -49,8 +49,8 @@ $ligne_loisir = $sql->fetch();//
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
-      $ligne = $sql->fetch(); //va chercher
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -97,7 +97,7 @@ $ligne_loisir = $sql->fetch();//
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Mise à jour d'un loisir</h1>
+                <h1>Mise à jour d'une compétence</h1>
                 <div class="col-lg"></div>
                     <?php
                         $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '2' ");
@@ -105,10 +105,10 @@ $ligne_loisir = $sql->fetch();//
                         $nbr_loisirs = $loisir->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_loisirs; ?> compétences de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <form class="" action="modif_loisir.php" method="post">
-                            <label for="loisir">Formulaire de mise à jour d'un loisir</label>
+                            <label for="loisir">Formulaire de mise à jour de la compétence</label>
                             <input type="text" name="loisir" class="form-control" value="<?php echo $ligne_loisir['loisir']; ?>">
                             <input hidden name="id_loisir" value="<?php echo $ligne_loisir['id_loisir']; ?>">
                             <input type="submit" value="Mettre à jour" class="btn btn-primary btn-lg" style="margin-top: 10px;">

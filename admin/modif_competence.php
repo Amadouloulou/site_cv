@@ -49,8 +49,8 @@ $ligne_competence = $sql->fetch();//
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='2' ");
-      $ligne = $sql->fetch(); //va chercher
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -105,7 +105,7 @@ $ligne_competence = $sql->fetch();//
                         $nbr_competences = $competence->rowCount();
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_competences; ?> compétences de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <form class="" action="modif_competence.php" method="post">
                             <label for="competence">Formulaire de mise à jour de la compétence</label>

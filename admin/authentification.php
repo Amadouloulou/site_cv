@@ -5,7 +5,7 @@ session_start(); // à mettre tout en haut du fichier .php, cette fonction propr
 
 $msg_authentification_erreur='';// on initialise la variable en cas d'erreur
 
-if(isset($_POST['connexion'])) {// on envoie le form avec le name du bouton (on a cliqué sur le bouton)
+if(isset($_POST['email'])) {// on envoie le form avec le name du bouton (on a cliqué sur le bouton)
     $email = addslashes($_POST['email']);
     $mdp = addslashes($_POST['mdp']);
 
@@ -26,7 +26,9 @@ if(isset($_POST['connexion'])) {// on envoie le form avec le name du bouton (on 
         header('location:index.php');
     }
 }//ferme if isset
+var_dump($_POST);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -1,4 +1,30 @@
 <?php require '../connexion/connexion.php' ?>
+<?php
+session_start();// à mettre dans toutes les pages de l'admin ; SESSION et authentification
+	if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){
+		$id_utilisateur=$_SESSION['id_utilisateur'];
+		$prenom=$_SESSION['prenom'];
+		$nom=$_SESSION['nom'];
+
+		//echo $_SESSION['connexion'];
+
+	}else{//l'utilisateur n'est pas connecté
+		header('location:authentification.php');
+	}
+//pour se déconnecter
+if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
+
+	$_SESSION['connexion']='';// on vide les variables de session
+	$_SESSION['id_utilisateur']='';
+	$_SESSION['prenom']='';
+	$_SESSION['nom']='';
+
+	unset($_SESSION['connexion']);
+	session_destroy();
+
+	header('location:../index.php');
+}
+	?>
 
 <?php
 //gestion des contenus
@@ -20,14 +46,10 @@ if(isset($_GET['id_competence'])){
     header("location: ../admin/competences.php");
 
 }
-
  ?>
-
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -55,7 +77,7 @@ if(isset($_GET['id_competence'])){
 <?php
 
       $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
-      $ligne = $sql->fetch(); //va chercher
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -87,7 +109,7 @@ if(isset($_GET['id_competence'])){
                         <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="competences.php">competences</a>
+                        <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="experiences.php">Expériences</a>
@@ -116,7 +138,7 @@ if(isset($_GET['id_competence'])){
                         $nbr_competences = $competence->rowCount();//compte les lignes
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> competence(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_competences; ?> competence(s) de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>

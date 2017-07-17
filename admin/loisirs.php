@@ -1,5 +1,34 @@
 <?php require '../connexion/connexion.php' ?>
 <?php
+session_start();// à mettre dans toutes les pages de l'admin ; SESSION et authentification
+	if(isset($_SESSION['connexion']) && $_SESSION['connexion']=='connecté'){
+		$id_utilisateur=$_SESSION['id_utilisateur'];
+		$prenom=$_SESSION['prenom'];
+		$nom=$_SESSION['nom'];
+
+		//echo $_SESSION['connexion'];
+
+	}else{//l'utilisateur n'est pas connecté
+		header('location:authentification.php');
+	}
+//pour se déconnecter
+if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
+
+	$_SESSION['connexion']='';// on vide les variables de session
+	$_SESSION['id_utilisateur']='';
+	$_SESSION['prenom']='';
+	$_SESSION['nom']='';
+
+	unset($_SESSION['connexion']);
+	session_destroy();
+
+	header('location:../index.php');
+}
+	?>
+
+<?php
+//gestion des contenus
+//insertion d'une compétence
 if(isset($_POST['loisir'])){//si on récupere un nouveau loisir
     if($_POST['loisir']!=''){// si loisir est pas vide
             $loisir = addslashes($_POST['loisir']);
@@ -17,21 +46,17 @@ if(isset($_GET['id_loisir'])){
     header("location: ../admin/loisirs.php");
 
 }
-
  ?>
-
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Loisirs</title>
+    <title>loisirs</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -52,7 +77,7 @@ if(isset($_GET['id_loisir'])){
 <?php
 
       $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
-      $ligne = $sql->fetch(); //va chercher
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -105,27 +130,27 @@ if(isset($_GET['id_loisir'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>Loisirs</h1>
+                <h1>loisirs</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '$id_utilisateur' ");
+                        $loisir = $pdoCV->prepare("SELECT * FROM t_loisirs WHERE utilisateur_id = '$id_utilisateur' ");// prépare la requête
                         $loisir->execute();// execute la
-                        $nbr_loisirs = $loisir->rowCount();
+                        $nbr_loisirs = $loisir->rowCount();//compte les lignes
 
                     ?>
-                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_loisirs; ?> loisir(s) de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
                                 <tr>
-                                    <th>Loisir</th>
+                                    <th>loisir</th>
                                     <th>Modifier</th>
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
                                     <?php while($ligne_loisir = $loisir->fetch()){ ?>
                                     <td><?php echo $ligne_loisir['loisir']; ?></td>
-                                    <td><a href="modif_loisir.php"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td><a href="modif_loisir.php?id_loisir=<?php echo $ligne_loisir['id_loisir']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
                                     <td><a href="loisirs.php?id_loisir=<?php echo $ligne_loisir['id_loisir'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
@@ -142,9 +167,9 @@ if(isset($_GET['id_loisir'])){
 
                                 <!-- Text input-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="competence">Loisir</label>
+                                    <label class="col-md-4 control-label" for="loisir">Compétence</label>
                                     <div class="col-md-4">
-                                        <input id="loisir" name="loisir" type="text" placeholder="loisir" class="form-control input-md">
+                                        <input id="loisir" name="loisir" type="text" placeholder="compétence" class="form-control input-md">
 
                                     </div>
                                 </div>
