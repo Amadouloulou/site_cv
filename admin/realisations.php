@@ -29,23 +29,23 @@ if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
 <?php
 //gestion des contenus
 //insertion d'une compétence
-if(isset($_POST['titre_r'])){//si on récupere un nouveau realisation
-    if($_POST['titre_r']!='' && $_POST['sous_titre_r']!='' && $_POST['dates_r']!='' && $_POST['description_r']!=''){// si realisation est pas vide
-            $titre_e = addslashes($_POST['titre_r']);
-            $sous_titre_e = addslashes($_POST['sous_titre_r']);
-            $dates_e = addslashes($_POST['dates_r']);
-            $description_e = addslashes($_POST['description_r']);
-            $pdoCV->exec("INSERT INTO t_realisations VALUES (NULL, '$titre_r', '$sous_titre_r', '$dates_r', '$description_r', '$id_utilisateur')"); //mettre $id_utilisateur quand on l'aura en variable de session
-            header("location: ../admin/realisations.php");
+if(isset($_POST['titre_f'])){//si on récupere un nouveau formation
+    if($_POST['titre_f']!='' && $_POST['sous_titre_f']!='' && $_POST['dates_f']!='' && $_POST['description_f']!=''){// si formation est pas vide
+            $titre_f = addslashes($_POST['titre_f']);
+            $sous_titre_f = addslashes($_POST['sous_titre_f']);
+            $dates_f = addslashes($_POST['dates_f']);
+            $description_f = addslashes($_POST['description_f']);
+            $pdoCV->exec("INSERT INTO t_formations VALUES (NULL, '$titre_f', '$sous_titre_f', '$dates_f', '$description_f', '$id_utilisateur')"); //mettre $id_utilisateur quand on l'aura en variable de session
+            header("location: ../admin/formations.php");
             exit();
     }//ferme le if
 }//ferme le if isset
-// suppression d'un realisation
-if(isset($_GET['id_realisation'])){
-    $efface = $_GET['id_realisation'];
-    $sql = "DELETE FROM t_realisations WHERE id_realisation = '$efface'";
+// suppression d'un formation
+if(isset($_GET['id_formation'])){
+    $efface = $_GET['id_formation'];
+    $sql = "DELETE FROM t_formations WHERE id_formation = '$efface'";
     $pdoCV->query($sql);//ou avec exec
-    header("location: ../admin/realisations.php");
+    header("location: ../admin/formations.php");
 
 }
 
@@ -59,7 +59,7 @@ if(isset($_GET['id_realisation'])){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>realisations</title>
+    <title>formations</title>
     <link rel="stylesheet" href="../css/style_amadou.css">
 
     <!-- Bootstrap Core CSS -->
@@ -115,13 +115,16 @@ if(isset($_GET['id_realisation'])){
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="expereiences.php">Expériences</a>
+                        <a class="page-scroll" href="experiences.php">Expériences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="realisations.php">Réalisations</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="formations.php">Formations</a>
+                    </li>
+					<li>
+                        <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
                     </li>
                 </ul>
             </div>
@@ -133,15 +136,15 @@ if(isset($_GET['id_realisation'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>realisations</h1>
+                <h1>formations</h1>
                 <div class="col-lg"></h1>
                     <?php
-                        $realisation = $pdoCV->prepare("SELECT * FROM t_realisations WHERE utilisateur_id = '$id_utilisateur' ");// prépare la requête
-                        $realisation->execute();// execute la
-                        $nbr_realisations = $realisation->rowCount();//compte les lignes
+                        $formation = $pdoCV->prepare("SELECT * FROM t_formations WHERE utilisateur_id = '$id_utilisateur' ");// prépare la requête
+                        $formation->execute();// execute la
+                        $nbr_formations = $formation->rowCount();//compte les lignes
 
                     ?>
-                    <p> Il y a <?php echo $nbr_realisations; ?> realisation(s) de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_formations; ?> formation(s) de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
@@ -154,47 +157,47 @@ if(isset($_GET['id_realisation'])){
                                     <th>Supprimer</th>
                                 </tr>
                                 <tr>
-                                    <?php while($ligne_realisation = $realisation->fetch()){ ?>
-                                    <td><?php echo $ligne_realisation['titre_r']; ?></td>
-                                    <td><?php echo $ligne_realisation['sous_titre_r']; ?></td>
-                                    <td><?php echo $ligne_realisation['dates_r']; ?></td>
-                                    <td><?php echo $ligne_realisation['description_r']; ?></td>
-                                    <td><a href="modif_realisation.php?id_realisation=<?php echo $ligne_realisation['id_realisation']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
-                                    <td><a href="realisations.php?id_realisation=<?php echo $ligne_realisation['id_realisation'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
+                                    <?php while($ligne_formation = $formation->fetch()){ ?>
+                                    <td><?php echo $ligne_formation['titre_f']; ?></td>
+                                    <td><?php echo $ligne_formation['sous_titre_f']; ?></td>
+                                    <td><?php echo $ligne_formation['dates_f']; ?></td>
+                                    <td><?php echo $ligne_formation['description_f']; ?></td>
+                                    <td><a href="modif_formation.php?id_formation=<?php echo $ligne_formation['id_formation']; ?>"><span class="glyphicon glyphicon-pencil"></span></a></td>
+                                    <td><a href="formations.php?id_formation=<?php echo $ligne_formation['id_formation'] ?>"><span class="glyphicon glyphicon-trash"></span></a></td>
 
                                 </tr>
                             <?php } ?>
                             </tbody>
                         </table>
-                        <form class="form-horizontal" action="realisations.php" method="post">
+                        <form class="form-horizontal" action="formations.php" method="post">
                             <fieldset>
                                 <!-- Form Name -->
                                 <legend>Form Name</legend>
                                 <!-- Text input-->
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="titre_r">Titre</label>
+                                    <label class="col-md-4 control-label" for="titre_f">Titre</label>
                                     <div class="col-md-4">
-                                        <input type="text" id="titre_r" name="titre_r" type="text" placeholder="titre" class="form-control input-md">
+                                        <input type="text" id="titre_f" name="titre_f" type="text" placeholder="titre" class="form-control input-md">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="sous_titre_r">Sous-titre</label>
+                                    <label class="col-md-4 control-label" for="sous_titre_f">Sous-titre</label>
                                     <div class="col-md-4">
-                                        <input type="text" id="sous_titre_r" name="sous_titre_r" type="text" placeholder="compétence" class="form-control input-md">
+                                        <input type="text" id="sous_titre_f" name="sous_titre_f" type="text" placeholder="compétence" class="form-control input-md">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="dates_r">Année</label>
+                                    <label class="col-md-4 control-label" for="dates_f">Année</label>
                                     <div class="col-md-4">
-                                        <input type="date" id="dates_r" name="dates_r" type="text" placeholder="compétence" class="form-control input-md">
+                                        <input type="date" id="dates_f" name="dates_f" type="text" placeholder="compétence" class="form-control input-md">
 
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="col-md-4 control-label" for="description_r">Description</label>
+                                    <label class="col-md-4 control-label" for="description_f">Description</label>
                                     <div class="col-md-4">
-                                        <input type="text" id="description_r" name="description_r" type="text" placeholder="compétence" class="form-control input-md">
+                                        <input type="text" id="description_f" name="description_f" type="text" placeholder="compétence" class="form-control input-md">
 
                                     </div>
                                 </div>

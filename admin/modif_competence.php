@@ -85,7 +85,16 @@ $ligne_competence = $sql->fetch();//
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="page-scroll" href="experiences.php">Experiences</a>
+                    </li>
+					<li>
+                        <a class="page-scroll" href="realisations.php">Réalisations</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="formations.php">Formations</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
                     </li>
                 </ul>
             </div>

@@ -30,16 +30,19 @@ if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
 
 <?php
 // gestion des contenus, mise à jour d'une compétence
-if(isset($_POST['realisation'])){// par le nom du premier input
-
-
+if(isset($_POST['titre_r'])){// par le nom du premier input
     $realisation = addslashes($_POST);
+	$titre_r = addslashes($_POST['titre_r']);
+	$sous_titre_r = addslashes($_POST['sous_titre_r']);
+	$dates_r = addslashes($_POST['dates_r']);
+	$description_r = addslashes($_POST['description_r']);
     $id_realisation = $_POST['id_realisation'];
-    $pdoCV->query("UPDATE t_realisations SET realisation='$realisation' WHERE id_realisation='$id_realisation'");
+    $pdoCV->query("UPDATE t_realisations SET titre_r='$titre_r',sous_titre_r='$sous_titre_r',dates_r='$dates_r',description_r='$description_r'  WHERE id_realisation='$id_realisation'");
 
     header('location: ../admin/realisations.php');//le header pour revenir à la liste des compétences de l'utilisation
     exit();
 }
+
 //je récupère la compétence
 $id_realisation = $_GET['id_realisation']; // par l'id et $_GET
 $sql = $pdoCV->query("SELECT * FROM t_realisations WHERE id_realisation = '$id_realisation'"); // la requête égale à l'id
@@ -113,7 +116,16 @@ $ligne_realisation = $sql->fetch();//
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+                        <a class="page-scroll" href="experiences.php">Experiences</a>
+                    </li>
+					<li>
+                        <a class="page-scroll" href="realisations.php">Réalisations</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="formations.php">Formations</a>
+                    </li>
+					<li>
+                        <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
                     </li>
                 </ul>
             </div>
@@ -136,7 +148,7 @@ $ligne_realisation = $sql->fetch();//
                     ?>
                     <p> Il y a <?php echo $nbr_realisations; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <form class="" action="realisations.php" method="post">
+                        <form class="" action="modif_realisation.php" method="post">
                             <label for="titre_r">Formulaire de mise à jour du titre</label>
                             <input type="text" name="titre_r" class="form-control" value="<?php echo $ligne_realisation['titre_r']; ?>">
 

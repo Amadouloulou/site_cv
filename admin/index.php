@@ -85,14 +85,20 @@
                         <a class="page-scroll" href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="COMPETENCES.php">Compétences</a>
+                        <a class="page-scroll" href="competences.php">Compétences</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
-                    </li>
+						<a class="page-scroll" href="experiences.php">Experiences</a>
+					</li>
+					<li>
+						<a class="page-scroll" href="realisations.php">Réalisations</a>
+					</li>
+					<li>
+						<a class="page-scroll" href="formations.php">Formations</a>
+					</li>
                     <li>
                         <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
                     </li>
@@ -140,35 +146,10 @@
                     $nbr_compétences = $sql->rowCount() // compte les lignes
 
                  ?>
-                <div class="col-lg-12">
-                    <h1>COMPETENCE</h1>
-                    <p>il y a <?php echo $nbr_compétences; ?> compétence pour </p>
-                </div>
             </div>
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section id="services" class="services-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Services Section</h1>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1>Contact Section</h1>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

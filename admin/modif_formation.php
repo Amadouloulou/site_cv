@@ -30,16 +30,19 @@ if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
 
 <?php
 // gestion des contenus, mise à jour d'une compétence
-if(isset($_POST['formation'])){// par le nom du premier input
-
-
+if(isset($_POST['titre_f'])){// par le nom du premier input
     $formation = addslashes($_POST);
+	$titre_f = addslashes($_POST['titre_f']);
+	$sous_titre_f = addslashes($_POST['sous_titre_f']);
+	$dates_f = addslashes($_POST['dates_f']);
+	$description_f = addslashes($_POST['description_f']);
     $id_formation = $_POST['id_formation'];
-    $pdoCV->query("UPDATE t_formations SET formation='$formation' WHERE id_formation='$id_formation'");
+    $pdoCV->query("UPDATE t_formations SET titre_f='$titre_f',sous_titre_f='$sous_titre_f',dates_f='$dates_f',description_f='$description_f'  WHERE id_formation='$id_formation'");
 
     header('location: ../admin/formations.php');//le header pour revenir à la liste des compétences de l'utilisation
     exit();
 }
+
 //je récupère la compétence
 $id_formation = $_GET['id_formation']; // par l'id et $_GET
 $sql = $pdoCV->query("SELECT * FROM t_formations WHERE id_formation = '$id_formation'"); // la requête égale à l'id
@@ -112,8 +115,17 @@ $ligne_formation = $sql->fetch();//
                     <li>
                         <a class="page-scroll" href="loisirs.php">Loisirs</a>
                     </li>
-                    <li>
-                        <a class="page-scroll" href="#contact">Contact</a>
+					<li>
+						<a class="page-scroll" href="experiences.php">Experiences</a>
+					</li>
+					<li>
+						<a class="page-scroll" href="realisations.php">Réalisations</a>
+					</li>
+					<li>
+						<a class="page-scroll" href="formations.php">Formations</a>
+					</li>
+					<li>
+                        <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
                     </li>
                 </ul>
             </div>
@@ -136,7 +148,7 @@ $ligne_formation = $sql->fetch();//
                     ?>
                     <p> Il y a <?php echo $nbr_formations; ?> expérience(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
                     <div class="table-responsive">
-                        <form class="" action="formations.php" method="post">
+                        <form class="" action="modif_formation.php" method="post">
                             <label for="titre_f">Formulaire de mise à jour du titre</label>
                             <input type="text" name="titre_f" class="form-control" value="<?php echo $ligne_formation['titre_f']; ?>">
 

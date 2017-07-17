@@ -120,6 +120,9 @@ if(isset($_GET['id_loisir'])){
                     <li>
                         <a class="page-scroll" href="formations.php">Formations</a>
                     </li>
+					<li>
+                        <a class="page-scroll" href="index.php?quitter=oui">Déconnexion</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
