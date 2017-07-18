@@ -136,7 +136,7 @@ if(isset($_GET['id_formation'])){
     <section id="about" class="about-section">
         <div class="container">
             <div class="row">
-                <h1>formations</h1>
+                <h1>Formations</h1>
                 <div class="col-lg"></h1>
                     <?php
                         $formation = $pdoCV->prepare("SELECT * FROM t_formations WHERE utilisateur_id = '$id_utilisateur' ");// prépare la requête
