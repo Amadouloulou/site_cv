@@ -169,7 +169,7 @@ if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
                             </tbody>
                         </table>
 
-                        <form class="form-horizontal" action="experiences.php" method="post">
+                        <form class="form-horizontal" action="" method="post">
                             <fieldset>
                                 <!-- Form Name -->
                                 <legend>Form Name</legend>
@@ -213,7 +213,7 @@ if(isset($_GET['quitter'])){// on récupère le terme quitter dans l'url
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for=""></label>
                                 <div class="col-md-4">
-                                    <button id="" name="" class="btn btn-primary">Envoyer</button>
+                                    <button type="submit" id="" name="" class="btn btn-primary">Envoyer</button>
                                 </div>
                             </div>
 

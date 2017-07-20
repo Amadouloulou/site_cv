@@ -54,8 +54,8 @@ if(isset($_GET['id_competence'])){
 </head>
 <?php
 
-      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE id_utilisateur='$id_utilisateur' ");
-      $ligne = $sql->fetch(); //va chercher
+      $sql = $pdoCV->query(" SELECT * FROM t_utilisateurs WHERE utilisateur_id='$id_utilisateur' ");
+      $ligne_utilisateur = $sql->fetch(); //va chercher
  ?>
 
 <!-- The #page-top ID is part of the scrolling feature - the data-spy and data-target are part of the built-in Bootstrap scrollspy function -->
@@ -116,7 +116,7 @@ if(isset($_GET['id_competence'])){
                         $nbr_competences = $competence->rowCount();//compte les lignes
 
                     ?>
-                    <p> Il y a <?php echo $nbr_competences; ?> competence(s) de la table pour <?php echo $ligne['pseudo']; ?> </p>
+                    <p> Il y a <?php echo $nbr_competences; ?> competence(s) de la table pour <?php echo $ligne_utilisateur['pseudo']; ?> </p>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover table-striped">
                             <tbody>
