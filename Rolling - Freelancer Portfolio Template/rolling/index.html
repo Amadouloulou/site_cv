@@ -1,3 +1,18 @@
+<?php
+
+$hote='localhost'; // Le chemin vers le serveur
+$bdd='aniang_bd'; // le nom de la base de données
+$utilisateur='amadou'; // le nom d'utilisateur pour se connecter
+$passe='Db53rr$3'; // mot de passe de l'utilisateur
+
+$pdoCV = new PDO('mysql:host='.$hote.';dbname='.$bdd, $utilisateur, $passe);
+//$pdoCV est le npom de la variable de la connexion qui sert partout ou l'on doit se servir de cette connexion.
+$pdoCV->exec("SET NAMES utf8");
+
+ ?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -81,13 +96,13 @@
                                     <ul class="nav navbar-nav navbar-right">
                                         <li class="active"><a class="smoth-scroll" href="#home">Home <div class="ripple-wrapper"></div></a>
                                         </li>
-                                        <li><a class="smoth-scroll" href="#about">About</a>
+                                        <li><a class="smoth-scroll" href="#about">A propo</a>
                                         </li>
                                         <li><a class="smoth-scroll" href="#portfolio">Portfolio</a>
                                         </li>
                                         <li><a class="smoth-scroll" href="#testimonials">Testimonial</a>
                                         </li>
-                                        <li><a class="smoth-scroll" href="#services">services</a>
+                                        <li><a class="smoth-scroll" href="#services">Services</a>
                                         </li>
                                         <li><a class="smoth-scroll" href="#contact">Contact</a>
                                         </li>
